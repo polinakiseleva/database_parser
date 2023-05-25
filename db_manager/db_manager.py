@@ -10,25 +10,27 @@ class DBManager:
     def get_companies_and_vacancies_count(self):
         with self.conn.cursor() as cur:
             cur.execute('SELECT employer_name, open_vacancies '
-                        'FROM employers')
+                        'FROM employers '
+                        'ORDER BY employer_name DESC')
             rows = cur.fetchall()
             for row in rows:
-                print(row)
+                print(f'Компания "{row[0]}", {row[1]} вак.')
 
     def get_all_vacancies(self):
         with self.conn.cursor() as cur:
-            cur.execute('SELECT employer_name, vacancy_name, vacancy_url'
-                        'FROM employers'
-                        'JOIN vacancies USING(employer_id))')
+            cur.execute('SELECT employer_name, vacancy_name, vacancy_url '
+                        'FROM vacancies '
+                        'ORDER BY employer_name DESC')
             rows = cur.fetchall()
             for row in rows:
-                print(row)
+                print(f'Компания "{row[0]}", должность - {row[1]}, ссылка на вакансию: {row[2]}')
 
     def get_vacancies_with_keyword(self, keyword):
         with self.conn.cursor() as cur:
-            cur.execute(f"SELECT vacancy_name "
+            cur.execute(f"SELECT employer_name, vacancy_name, vacancy_url "
                         f"FROM vacancies "
-                        f"WHERE vacancy_name LIKE '%{keyword}%'")
+                        f"WHERE vacancy_name LIKE '%{keyword}%'"
+                        f"ORDER BY employer_name DESC")
             rows = cur.fetchall()
             for row in rows:
-                print(row)
+                print(f'Компания "{row[0]}", должность - {row[1]}, ссылка на вакансию: {row[2]}')
