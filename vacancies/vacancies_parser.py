@@ -27,9 +27,7 @@ class VacanciesParser:
         :param data: список словарей с информацией о вакансиях, результат работы метода get_employers_vacancies
         """
         vacancy_list = []
-        translit_filename = translit(filename, language_code='ru', reversed=True)
-        new_filename = f'{translit_filename}_vacancies.json'
-        with open(new_filename, 'w', encoding='utf-8') as file:
+        with open('./vacancy.json', 'w', encoding='utf-8') as file:
             for item in data:
                 employer_id = int(item.get('employer').get('id'))
                 employer_name = str(item.get('employer').get('name'))
@@ -43,4 +41,4 @@ class VacanciesParser:
                 }
                 vacancy_list.append(new_data)
             json.dump(vacancy_list, file, ensure_ascii=False, indent=5)
-            return f"Данные о вакансиях по кодовому слову '{filename}' выгружены в файл {new_filename}"
+            return f"Данные о вакансиях по кодовому слову '{filename}' выгружены в файл 'vacancy.json'"
