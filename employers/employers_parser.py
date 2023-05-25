@@ -38,8 +38,6 @@ class EmployersParser:
         :param keyword: кодовое слово для поиска компаний
         """
         data = self.get_employer_data(keyword)
-        translit_filename = translit(keyword, language_code='ru', reversed=True)
-        new_filename = f'{translit_filename}_employers.json'
-        with open(new_filename, 'w', encoding='utf-8') as file:
+        with open('./employer.json', 'w', encoding='utf-8') as file:
             json.dump(data, file, ensure_ascii=False, indent=5)
-            return f"Данные о работодателях по кодовому слову '{keyword}' выгружены в файл {new_filename}"
+            return f"Данные о работодателях по кодовому слову '{keyword}' выгружены в файл 'employer.json'"
