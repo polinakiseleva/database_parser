@@ -33,7 +33,9 @@ def create_tables(db_name, params):
                     employer_id serial,
                     employer_name varchar(255) NOT NULL,
                     vacancy_name varchar(255) NOT NULL,
-                    vacancy_url text NOT NULL)
+                    vacancy_url text NOT NULL,
+                    salary_from int,
+                    salary_to int)
                 """)
         print('Таблица "vacancies" успешно создана!')
     connection.commit()
@@ -72,14 +74,17 @@ def enter_data_into_vac_database(db_name, params):
                 vacancy_name = vac['vacancy_title']
                 vacancy_url = vac['vacancy_url']
                 employer_id = vac['employer_id']
+                salary_from = vac['salary_from']
+                salary_to = vac['salary_to']
                 cur.execute(
                     """
-                    INSERT INTO vacancies (employer_id, employer_name, vacancy_name, vacancy_url)
-                    VALUES (%s, %s, %s, %s)
+                    INSERT INTO vacancies (employer_id, employer_name, vacancy_name, 
+                    vacancy_url, salary_from, salary_to)
+                    VALUES (%s, %s, %s, %s, %s, %s)
                     """,
-                    (employer_id, employer_name, vacancy_name, vacancy_url)
+                    (employer_id, employer_name, vacancy_name, vacancy_url, salary_from, salary_to)
                 )
-            print('Таблица "vacancies" успешно заполнена данными!\n')
+            print('Таблица "vacancies" успешно заполнена данными!')
 
         connection.commit()
         connection.close()
