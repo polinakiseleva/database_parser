@@ -25,6 +25,25 @@ class DBManager:
             for row in rows:
                 print(f'Компания "{row[0]}", должность - {row[1]}, ссылка на вакансию: {row[2]}')
 
+    def get_avg_salary(self):
+        with self.conn.cursor() as cur:
+            cur.execute('SELECT (AVG(salary_from)+AVG(salary_to))/2 '
+                        'AS salary_avg '
+                        'FROM vacancies')
+            rows = cur.fetchall()
+            for row in rows:
+                print(f'Средняя зарплата по вакансиям составляет {row[0]}')
+
+    def get_vacancies_with_higher_salary(self):
+        with self.conn.cursor() as cur:
+            cur.execute('SELECT vacancy_name, salary_from, vacancy_url '
+                        'FROM vacancies '
+                        'WHERE salary_from > (SELECT AVG((salary_from + salary_to) / 2) FROM vacancies) '
+                        'ORDER BY salary_from DESC')
+            rows = cur.fetchall()
+            for row in rows:
+                print(f'Должность - {row[0]}, начальная зарплата: {row[1]}, ссылка на вакансию: {row[2]}')
+
     def get_vacancies_with_keyword(self, keyword):
         with self.conn.cursor() as cur:
             cur.execute(f"SELECT employer_name, vacancy_name, vacancy_url "
