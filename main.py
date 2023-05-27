@@ -1,4 +1,3 @@
-from transliterate import translit
 from config import config
 from employers.employers_parser import EmployersParser
 from vacancies.vacancies_parser import VacanciesParser
@@ -39,28 +38,41 @@ def main():
     enter_data_into_emp_database(db_name, params)
     enter_data_into_vac_database(db_name, params)
 
-    db_manager = DBManager(db_name, config())
-    user_input = input("Для продолжения работы выберите команду из списка:\n"
-                       "1: Получение списка всех компаний и количества вакансий у каждой компании\n"
-                       "2: Получение списка всех вакансий с указанием названия компании, хир"
-                       "названия вакансии и ссылки на вакансию\n"
-                       "3: Получение списка всех вакансий по ключевому слову\n"
-                       "4: Выход из программы\n"
-                       "   Введите цифру нужной команды: ").strip()
+    while True:
+        db_manager = DBManager(db_name, config())
+        user_input = input("\nДля продолжения работы выберите команду из списка:\n"
+                           "1: Получение списка всех компаний и количества вакансий у каждой компании\n"
+                           "2: Получение списка всех вакансий с указанием названия компании, "
+                           "названия вакансии и ссылки на вакансию\n"
+                           "3: Получение списка всех вакансий по ключевому слову\n"
+                           "4: Получение средней зарплаты по вакансиям\n"
+                           "5: Получение списка вакансий, у которых зарплата выше средней по всем вакансиям.\n"
+                           "6: Выход из программы\n"
+                           "   Введите цифру нужной команды: ").strip()
 
-    if user_input == '1':
-        print(db_manager.get_companies_and_vacancies_count())
+        if user_input == '1':
+            db_manager.get_companies_and_vacancies_count()
 
-    elif user_input == '2':
-        print(db_manager.get_all_vacancies())
+        elif user_input == '2':
+            db_manager.get_all_vacancies()
 
-    elif user_input == '3':
-        vacancy_kw = input('   Введите ключевое слово: ').strip()
-        print(db_manager.get_vacancies_with_keyword(vacancy_kw))
+        elif user_input == '3':
+            vacancy_kw = input('   Введите ключевое слово: ').strip()
+            db_manager.get_vacancies_with_keyword(vacancy_kw)
 
-    elif user_input not in ('1', '2', '3', '4'):
-        print('Такой команды нет в списке. Пожалуйста, повторите ввод')
-        user_input = input('Введите команду из списка: ').strip()
+        elif user_input == '4':
+            db_manager.get_avg_salary()
+
+        elif user_input == '5':
+            db_manager.get_vacancies_with_higher_salary()
+
+        elif user_input not in ('1', '2', '3', '4', '5', '6'):
+            print('Такой команды нет в списке. Пожалуйста, повторите ввод')
+            user_input = input('Введите команду из списка: ').strip()
+
+        elif user_input == '6':
+            print('\nБлагодарим за использование программы! До новых встреч!')
+            break
 
 
 if __name__ == "__main__":
